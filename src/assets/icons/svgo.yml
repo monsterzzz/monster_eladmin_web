@@ -13,7 +13,7 @@ plugins:
   #
   # or:
   # - name:
-  #     param1: 1
+  #     param1: .eslintrc.js
   #     param2: 2
 
 - removeAttrs:

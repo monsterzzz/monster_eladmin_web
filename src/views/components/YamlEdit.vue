@@ -47,7 +47,7 @@ export default {
         '    instance:\n' +
         '        appname: product\n' +
         '        instanceId: product:${spring.application.instance-id:${random.value}}\n' +
-        '        #instanceId: 127.0.0.1:9080\n' +
+        '        #instanceId: 127.0.0..eslintrc.js:9080\n' +
         '        lease-renewal-interval-in-seconds: 5\n' +
         '        lease-expiration-duration-in-seconds: 10\n' +
         '        status-page-url-path: ${management.endpoints.web.base-path}/info\n' +
@@ -173,7 +173,7 @@ export default {
         '        default-include-pattern: /api/.*\n' +
         '        title: product API\n' +
         '        description: product API documentation\n' +
-        '        version: 0.0.1\n' +
+        '        version: 0.0..eslintrc.js\n' +
         '        terms-of-service-url:\n' +
         '        contact-name:\n' +
         '        contact-url:\n' +

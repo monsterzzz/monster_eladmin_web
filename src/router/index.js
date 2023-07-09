@@ -55,8 +55,12 @@ export const loadMenus = (next, to) => {
   buildMenus().then(res => {
     const sdata = JSON.parse(JSON.stringify(res))
     const rdata = JSON.parse(JSON.stringify(res))
+    const rdata2 = JSON.parse(JSON.stringify(res))
     const sidebarRoutes = filterAsyncRouter(sdata)
-    const rewriteRoutes = filterAsyncRouter(rdata, false, true)
+    // const rewriteRoutes = filterAsyncRouter(rdata, false, true)
+    const rewriteRoutes = filterAsyncRouter(rdata)
+    console.log(rewriteRoutes)
+    console.log(filterAsyncRouter(rdata2, false, true))
     rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
 
     store.dispatch('GenerateRoutes', rewriteRoutes).then(() => { // 存储路由

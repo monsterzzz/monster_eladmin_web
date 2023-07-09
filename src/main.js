@@ -4,6 +4,9 @@ import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css'
 
+import VXETable from "vxe-table";
+import 'vxe-table/lib/style.css'
+
 import Element from 'element-ui'
 
 // 数据字典
@@ -24,6 +27,7 @@ import router from './router/routers'
 import './assets/icons' // icon
 import './router/index' // permission control
 
+Vue.use(VXETable)
 Vue.use(checkPer)
 Vue.use(permission)
 Vue.use(dict)

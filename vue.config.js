@@ -10,6 +10,8 @@ function resolve(dir) {
 const name = defaultSettings.title // 网址标题
 const port = 8013 // 端口配置
 
+process.env.VUE_APP_BASE_API = 'http://localhost:8000' // 后台接口地址
+
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   // hash 模式下可使用
