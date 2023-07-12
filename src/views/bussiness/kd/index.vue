@@ -1,83 +1,99 @@
 <template>
-  <div style="margin:10px;width: 100%;padding-right: 20px">
-    <div class="queryArea" style="border-bottom-width: 1px; border-bottom-color: gainsboro; border-bottom-style: solid">
-      <el-form ref="form" :model="queryParams" inline>
-        <el-form-item>
-          <el-input size="mini" v-model="queryParams.base" clearable placeholder="基地" />
-        </el-form-item>
-        <el-form-item>
-          <el-input size="mini" v-model="queryParams.costAttribute" clearable placeholder="费用属性" />
-        </el-form-item>
-        <el-form-item>
-          <el-input size="mini" v-model="queryParams.contractNumber" clearable placeholder="合同编号" />
-        </el-form-item>
-        <el-form-item>
-          <el-input size="mini" v-model="queryParams.contractStart" clearable placeholder="合同起" />
-        </el-form-item>
-        <el-form-item>
-          <el-input size="mini" v-model="queryParams.contractEnd" clearable placeholder="合同止" />
-        </el-form-item>
-        <el-form-item>
-          <el-input size="mini" v-model="queryParams.costCenter" clearable placeholder="成本中心" />
-        </el-form-item>
-        <el-form-item>
-          <el-input size="mini" v-model="queryParams.prNumber" clearable placeholder="pr号" />
-        </el-form-item>
-        <el-form-item>
-          <el-button size="mini" type="primary" @click="getList">查询</el-button>
-          <el-button size="mini" @click="resetHandler">重置</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="functionArea" style="padding-top: 10px">
-      <el-row>
-        <el-button size="mini" type="primary" @click="addOrUpdateRow" >新增</el-button>
-        <el-button size="mini" type="primary" @click="isImportExcel = true" >导入EXCEL</el-button>
-        <el-button size="mini" type="primary" @click="exportExcel" >导出EXCEL</el-button>
-        <el-button size="mini" type="danger" @click="batchDelete">批量删除</el-button>
-        <el-button size="mini" type="danger" @click="conditionDelete">条件删除</el-button>
-      </el-row>
-    </div>
-    <div class="tableArea" style="margin-top: 10px; ">
-      <el-table ref="table" border :data="tableData" size="small" style="width: 100%;"
-                :height="'75vh'"
-                :header-cell-class-name="'is-center'"
-                :cell-class-name="'is-center'"
-                v-loading="isLoading"
-                @selection-change="handleSelectionChange">
+  <div >
+    <div style="padding: 5px;display: flex;flex-direction: column;height: 100%;">
+      <div class="queryArea" style="border-bottom-width: 1px; border-bottom-color: gainsboro; border-bottom-style: solid">
+        <el-form ref="form" :model="queryParams" inline>
+          <el-form-item>
+            <el-input size="mini" v-model="queryParams.base" clearable placeholder="基地" />
+          </el-form-item>
+          <el-form-item>
+            <el-input size="mini" v-model="queryParams.costAttribute" clearable placeholder="费用属性" />
+          </el-form-item>
+          <el-form-item>
+            <el-input size="mini" v-model="queryParams.contractNumber" clearable placeholder="合同编号" />
+          </el-form-item>
+          <el-form-item>
+            <el-input size="mini" v-model="queryParams.contractStart" clearable placeholder="合同起" />
+          </el-form-item>
+          <el-form-item>
+            <el-input size="mini" v-model="queryParams.contractEnd" clearable placeholder="合同止" />
+          </el-form-item>
+          <el-form-item>
+            <el-input size="mini" v-model="queryParams.costCenter" clearable placeholder="成本中心" />
+          </el-form-item>
+          <el-form-item>
+            <el-input size="mini" v-model="queryParams.prNumber" clearable placeholder="pr号" />
+          </el-form-item>
+          <el-form-item>
+            <el-button size="mini" type="primary" @click="getList">查询</el-button>
+            <el-button size="mini" @click="resetHandler">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="functionArea" style="padding-top: 5px">
+        <el-row>
+          <el-button size="mini" type="primary" @click="addOrUpdateRow" >新增</el-button>
+          <el-button size="mini" type="primary" @click="isImportExcel = true" >导入EXCEL</el-button>
+          <el-button size="mini" type="primary" @click="exportExcel" >导出EXCEL</el-button>
+          <el-button size="mini" type="danger" @click="batchDelete">批量删除</el-button>
+          <el-button size="mini" type="danger" @click="conditionDelete">条件删除</el-button>
+        </el-row>
+      </div>
+      <div class="tableArea" style="padding-top: 5px;flex-grow: 1;">
+        <el-table ref="table" border :data="tableData" size="small"
 
-      >
-        <el-table-column type="selection" width="55" align="center" fixed/>
-        <el-table-column type="index" label="序号" fixed/>
-        <el-table-column prop="base" label="基地" align="center"  show-overflow-tooltip/>
-        <el-table-column prop="costAttribute" label="费用属性" show-overflow-tooltip align="center"  />
-        <el-table-column prop="contractNumber" label="合同编号" show-overflow-tooltip/>
-        <el-table-column prop="contractStart" label="合同起" show-overflow-tooltip/>
-        <el-table-column prop="contractEnd" label="合同止" show-overflow-tooltip/>
-        <el-table-column prop="purchaser" label="采购员" show-overflow-tooltip/>
-        <el-table-column prop="supplierCode" label="供应商代码" show-overflow-tooltip/>
-        <el-table-column prop="supplierName" label="供应商名称" show-overflow-tooltip/>
-        <el-table-column prop="businessContent" label="业务内容" show-overflow-tooltip/>
-        <el-table-column prop="costCenter" label="成本中心" show-overflow-tooltip/>
-        <el-table-column prop="accountCode" label="科目代码" show-overflow-tooltip />
-        <el-table-column prop="accountDescription" label="科目描述" show-overflow-tooltip/>
-        <el-table-column prop="prNumber" label="PR号" show-overflow-tooltip />
-        <el-table-column prop="settlementMethod" label="结算方式" show-overflow-tooltip />
-        <el-table-column prop="contractType" label="合同类别" show-overflow-tooltip />
-        <el-table-column prop="delayStatus" label="是否延期Y/N" show-overflow-tooltip/>
-      </el-table>
+                  :header-cell-class-name="'is-center'"
+                  :cell-class-name="'is-center'"
+                  v-loading="isLoading"
+                  @selection-change="handleSelectionChange">
+
+          >
+          <el-table-column type="selection" width="55" align="center" :fixed="'left'" />
+          <el-table-column type="index" label="序号" :fixed="'left'" />
+          <el-table-column prop="base" label="基地" align="center"  show-overflow-tooltip/>
+          <el-table-column prop="costAttribute" label="费用属性" show-overflow-tooltip align="center"  />
+          <el-table-column prop="contractNumber" label="合同编号" show-overflow-tooltip/>
+          <el-table-column prop="contractStart" label="合同起" show-overflow-tooltip/>
+          <el-table-column prop="contractEnd" label="合同止" show-overflow-tooltip/>
+          <el-table-column prop="purchaser" label="采购员" show-overflow-tooltip/>
+          <el-table-column prop="supplierCode" label="供应商代码" show-overflow-tooltip width="200px"/>
+          <el-table-column prop="supplierName" label="供应商名称" show-overflow-tooltip width="200px"/>
+          <el-table-column prop="businessContent" label="业务内容" show-overflow-tooltip width="500px"/>
+          <el-table-column prop="costCenter" label="成本中心" show-overflow-tooltip/>
+          <el-table-column prop="accountCode" label="科目代码" show-overflow-tooltip />
+          <el-table-column prop="accountDescription" label="科目描述" show-overflow-tooltip/>
+          <el-table-column prop="prNumber" label="PR号" show-overflow-tooltip />
+          <el-table-column prop="settlementMethod" label="结算方式" show-overflow-tooltip />
+          <el-table-column prop="contractType" label="合同类别" show-overflow-tooltip />
+          <el-table-column prop="contractType" label="合同类别" show-overflow-tooltip />
+          <el-table-column prop="contractType" label="合同类别" show-overflow-tooltip />
+          <el-table-column prop="contractType" label="合同类别" show-overflow-tooltip />
+          <el-table-column prop="contractType" label="合同类别" show-overflow-tooltip />
+          <el-table-column prop="contractType" label="合同类别" show-overflow-tooltip :fixed="'right'"/>
+
+          <el-table-column prop="delayStatus" label="是否延期Y/N" show-overflow-tooltip :fixed="'right'"/>
+        </el-table>
+        <div style="height: 100%;background-color: #E65D6E;width: 100%">1111</div>
+      </div>
+      <div style="height: 100px">
+        <el-pagination
+
+            style="margin-top: 2px;padding-left: 0px;"
+            @size-change="getList"
+            @current-change="getList"
+            :current-page.sync="queryParams.page"
+            :page-sizes="[10, 20,50,100,200]"
+            :page-size.sync="queryParams.size"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+        </el-pagination>
+      </div>
+
+
+
+
       <!--分页组件-->
-      <el-pagination
 
-          style="margin-top: 6px;padding-left: 0px"
-          @size-change="getList"
-          @current-change="getList"
-          :current-page.sync="queryParams.page"
-          :page-sizes="[10, 20,50,100,200]"
-          :page-size.sync="queryParams.size"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-      </el-pagination>
     </div>
     <el-dialog
         :title="isAdd ? '新增' : '编辑'"
@@ -397,6 +413,15 @@ export default {
     margin-left: 0px;
   }
 }
+
+</style>
+//  border-left: 1px solid #dfe6ec!important;
+<style lang="scss">
+thead th:not(.is-hidden):last-child {
+  background-color: #97a8be;
+  right: -1px !important;
+}
+
 </style>
 
 
